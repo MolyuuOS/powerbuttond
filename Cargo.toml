@@ -1,0 +1,13 @@
+[package]
+name = "powerbuttond"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+colored = "2.1.0"
+evdev = { version = "0.12.1", features = ["tokio"] }
+libc = "0.2.153"
+log = { version = "0.4.21", features = ["std"] }
+supports-color = "3.0.0"
+tokio = { version = "1.37.0", features = ["macros", "rt", "rt-multi-thread"] }
+toml = "0.8.12"
