@@ -51,7 +51,8 @@ impl Steam {
             return false;
         }
 
-        let pid = std::fs::read_to_string(&steampid).unwrap();
+        let pid_untrim = std::fs::read_to_string(&steampid).unwrap();
+        let pid = pid_untrim.trim();
         let cmdline = std::fs::read_to_string(format!("/proc/{}/cmdline", pid)).unwrap();
 
         cmdline.contains("-gamepadui")
