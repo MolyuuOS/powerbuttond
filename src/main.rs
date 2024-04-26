@@ -1,4 +1,4 @@
-use std::{process::{exit, Command}, time::Duration};
+use std::{process::{Command, exit}, time::Duration};
 
 use log::{error, info};
 
@@ -20,7 +20,7 @@ static LONG_PRESS_THRESHOLD: Duration = Duration::from_millis(1000);
 #[tokio::main]
 async fn main() {
     logger::init().unwrap();
-    
+
     let mut lock = lock::Lock::new(POWERBUTTOND_LOCKNAME, None);
     match lock.lock() {
         Ok(_) => {

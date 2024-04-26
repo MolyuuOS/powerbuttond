@@ -14,7 +14,20 @@ impl Steam {
         // read molyuuctl config to get it.
         let molyuuctl_config_content = std::fs::read_to_string("/etc/molyuuctl/config.toml").unwrap();
         let config = molyuuctl_config_content.parse::<Value>().unwrap();
-        let user = config["login"]["autologin"]["user"].as_str().unwrap().to_string();
+        let user = if let Some(user) = config["login"]["autologin"].get("user") {
+            user.as_str().unwrap().to_string()
+        } else {
+            // If autologin user is not set,
+            // find default user via uid.
+            let command = Command::new("id")
+                .args(["-u", "-n", "1000"])
+                .output().unwrap();
+            if command.status.success() {
+                String::from_utf8_lossy(&command.stdout).trim().to_string()
+            } else {
+                return Err(Box::from("Failed to get default user!"));
+            }
+        };
         let mut home_dir = String::new();
 
         // Find user home directory
